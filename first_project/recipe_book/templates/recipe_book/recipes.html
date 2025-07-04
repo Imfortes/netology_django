@@ -25,7 +25,7 @@
         </ul>
 
 
-        {% for category, category_recipes in recipes.items %}
+        {% for category, category_recipes in paginated_recipes.items %}
             <ul class="my-4">
                 <h2 class="text-xl">{{ category }}</h2>
 
@@ -39,12 +39,10 @@
                 {% endfor %}
 
             </ul>
-
-
-
         {% endfor %}
 
-        {#  PAGINATION  #}
+
+        {% include "include/pagination.html" %}
 
     </div>
 

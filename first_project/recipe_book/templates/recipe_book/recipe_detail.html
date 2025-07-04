@@ -18,7 +18,7 @@
 
         <div class="mb-6">
         <label class="block mb-2">Количество порций:</label>
-        <input type="number" min="1" value="1" class="person-counter border rounded px-3 py-2 w-20">
+        <input type="number" min="1" value="1" data-original="1" class="person-counter border rounded px-3 py-2 w-20">
         </div>
 
         <h2 class="text-xl font-semibold mb-4">Ингредиенты:</h2>
@@ -42,23 +42,26 @@
 {% block scripts %}
 	<script>
     document.addEventListener('DOMContentLoaded', function () {
-        console.log('12')
         const personCounter = document.querySelector('.person-counter')
         const ingredientItems = document.querySelectorAll('.ingredient-item')
         if (personCounter && ingredientItems) {
             personCounter.addEventListener('input', e => {
                 const multi = parseInt(e.target.value) || 1
-                console.log(multi, ingredientItems)
 
                 ingredientItems.forEach(item => {
                     const counterEl = item.querySelector('.ingredient-counter')
                     const counterElText = item.textContent
 
-                    console.log(counterEl.textContent.trim());
+                    const original = counterEl.dataset.original || counterEl.textContent;
+                    counterEl.dataset.original = original;
 
-                    const parts = counterEl.trim().split(' ')
-                    const value = parseInt(parts[0])
-                    const unit = parts.slice(1).join(' ')
+                    {#const parts = counterEl.textContent.trim().split(' ')#}
+                    {#const value = parseInt(parts[0])#}
+                    {#const unit = parts.slice(1).join(' ')#}
+
+                    const [value, ...unitParts] = original.trim().split(' ');
+                    const numericValue = parseFloat(value.replace(',', '.'));
+                    const unit = unitParts.join(' ');
 
                     if (!isNaN(value)) {
                         const newValue = (value * multi).toFixed(1)
